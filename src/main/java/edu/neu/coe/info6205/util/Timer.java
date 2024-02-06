@@ -5,6 +5,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
+import static edu.neu.coe.info6205.util.Benchmark_Timer.getWarmupRuns;
+
 /**
  * Class which is able to time the running of functions.
  */
@@ -61,33 +63,17 @@ public class Timer {
      */
     public <T, U> double repeat(int n, boolean warmup, Supplier<T> supplier, Function<T, U> function, UnaryOperator<T> preFunction, Consumer<U> postFunction) {
         // TO BE IMPLEMENTED : note that the timer is running when this method is called and should still be running when it returns.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // SKELETON
-         return 0;
+        pause();
+        for (int i = 0; i < n; i++) {
+            T t = supplier.get();
+            if (preFunction != null) t = preFunction.apply(t);
+            resume();
+            U u = function.apply(t);
+            pauseAndLap();
+            if(postFunction != null) postFunction.accept(u);
+        }
+        return meanLapTime();
         // END SOLUTION
     }
 
@@ -213,10 +199,10 @@ public class Timer {
      * @return the number of ticks for the system clock. Currently defined as nano time.
      */
     private static long getClock() {
-        // TO BE IMPLEMENTED 
-
+        // TO BE IMPLEMENTED
+        return System.nanoTime();
         // SKELETON
-         return 0;
+//         return 0;
         // END SOLUTION
     }
 
@@ -228,10 +214,10 @@ public class Timer {
      * @return the corresponding number of milliseconds.
      */
     private static double toMillisecs(long ticks) {
-        // TO BE IMPLEMENTED 
-
+        // TO BE IMPLEMENTED
+        return (double) ticks /1000000;
         // SKELETON
-         return 0;
+//         return 0;
         // END SOLUTION
     }
 
